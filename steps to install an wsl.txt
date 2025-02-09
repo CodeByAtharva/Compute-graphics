@@ -1,0 +1,24 @@
+steps to install an wsl:
+run the following command in the terminal with admin privilages:
+wsl --install
+wsl -d ubuntu
+
+steps for installing an opengl library:
+
+
+sudo apt-get update
+sudo apt-get install freeglut3-dev
+sudo apt-get install mesa-common-dev
+sudo apt-get install libglu1-mesa-dev
+
+
+command to compile the code:
+g++ [filename].cpp -o [filename] -lGL -lGLU -lglut
+g++ demo.cpp -o demo -lGL -lGLU -lglut
+
+to run the code:
+./demo
+
+
+
+
