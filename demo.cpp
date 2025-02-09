@@ -11,89 +11,6 @@ void myInit(void) {
 }
 
 
-void MyDisplay(void) {
-    glClear(GL_COLOR_BUFFER_BIT);    
-    glBegin(GL_LINES);
-    glVertex2i(100, 100);              
-    glVertex2i(100, 200);
-    glVertex2i(200, 100);
-    glVertex2i(200, 200);
-    
-    glVertex2i(100, 200);              
-    glVertex2i(200, 200);₹
-    glVertex2i(100, 100);
-    glVertex2i(200, 100);
-    
-    glVertex2i(150, 200);              
-    glVertex2i(150, 100);
-    glVertex2i(100, 150);
-    glVertex2i(200, 150);
-    
-    glVertex2i(200, 200);              
-    glVertex2i(100, 100);
-    glVertex2i(100, 200);
-    glVertex2i(200, 100);
-    glEnd();
-    glFlush();                     
-}
-
-void MyDisplay1(void) {
-    glClear(GL_COLOR_BUFFER_BIT);    
-    glBegin(GL_LINES);
-    glVertex2i(100, 100);              
-    glVertex2i(100, 200);
-    glVertex2i(200, 100);
-    glVertex2i(200, 200);
-    
-   glVertex2i(100, 200);              
-    glVertex2i(200, 200);
-    glVertex2i(100, 100);
-    glVertex2i(200, 100);
-    
-     glVertex2i(150, 200);              
-    glVertex2i(200, 150);
-    glVertex2i(150, 200);
-    glVertex2i(100, 150);
-    
-     glVertex2i(150, 100);              
-    glVertex2i(200, 150);
-    glVertex2i(150, 100);
-    glVertex2i(100, 150);
-    
-     glVertex2i(150, 200);              
-    glVertex2i(150, 100);
-    glVertex2i(100, 150);
-    glVertex2i(200, 150);
-    
-    glVertex2i(200, 200);              
-    glVertex2i(100, 100);
-    glVertex2i(100, 200);
-    glVertex2i(200, 100);
-    
-    glEnd();
-    glFlush();                     
-}
-void MyDisplay2(void) {
-    glClear(GL_COLOR_BUFFER_BIT);    
-    glBegin(GL_LINES);
-    
-    glVertex2i(100, 100);              
-    glVertex2i(100, 200);
-    
-    glVertex2i(100, 200);
-    glVertex2i(200, 200);
-    
-                  
-    glVertex2i(100, 150);
-    glVertex2i(150, 150);   
-    
-          glVertex2i(100, 100);          
-    glVertex2i(200, 100);
-  
-    glEnd();
-    glFlush();                     
-}
-
 void MyDisplay3(void) {
     glClear(GL_COLOR_BUFFER_BIT);    
     glBegin(GL_LINES);
@@ -141,7 +58,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(640, 480);   
     glutInitWindowPosition(100, 150); 
     glutCreateWindow("My Last Attempt"); 
-   // glutDisplayFunc(MyDisplay);   
+     
     glutDisplayFunc(MyDisplay3);     
     myInit();                         
     glutMainLoop();                 
