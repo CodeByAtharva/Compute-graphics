@@ -2,6 +2,9 @@
 #include <GL/glut.h>
 #include<math.h>
 
+using namespace std;
+
+
 int wl=700;
 int wh=700;
 void myInit(void){
@@ -20,11 +23,16 @@ int dx=x2-x1;
 int dy=y2-y1;
 
 //to find out the length
+
 if(abs(dx)>abs(dy)){
-    l=dx;
+    l=abs(dx);
 }else{
-    l=dy;
+    l=abs(dy);
 }
+
+
+//l = max(abs(dx), abs(dy));
+
 
 
 float DX = dx / float(l);
@@ -38,7 +46,23 @@ float y=y1;
 glBegin(GL_POINTS);
     for(int i=0;i<=l;i++){
         glColor3i(0,0,0);
-        glVertex2i(round(x),round(y));
+
+        if(LineType==1){
+            glVertex2i(round(x),round(y));
+            
+        }else if(LineType==2){
+            
+            if(i%5==0){
+                glVertex2i(round(x),round(y));
+
+            }
+
+        }else if(LineType==3){
+            if(i%10==0){
+                glVertex2i(round(x),round(y));
+
+            }
+        }
         x=x+DX;
         y=y+DY;
     }
@@ -64,17 +88,14 @@ void plotAxis(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    ddaAlgorithm(100,100,200,200);
+    ddaAlgorithm(100,100,200,200,1);
+    ddaAlgorithm(-100,-50,-100,-300,2);
+    ddaAlgorithm(-300, -450, -100, 500, 3);
 
-    int c;
-    cout<<"\nEnter your choice:";
-    cout<<"1. simple line";
-    cout<<"2. dotted line";
-    cout<<"3. Dashed line";
-    cout<<"4. Boat object";
     plotAxis();
 
 }
+
 
 
 int main(int c,char** v){
@@ -87,6 +108,9 @@ int main(int c,char** v){
 
     glutDisplayFunc(display);
     myInit();
+
+
+
     glutMainLoop();
     return 0;
 
