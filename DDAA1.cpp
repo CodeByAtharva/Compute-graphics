@@ -94,14 +94,26 @@ void drawBoat(){
     
     ddaAlgorithm(300,-300,300,-350,1); //joint the vertical left part 
     ddaAlgorithm(750,-350,750,-300,1); //joint the vertical right part 
-
+    
 
     ddaAlgorithm(400,-500,300,-350,1); //connecting left sides
     ddaAlgorithm(650,-500,750,-350,1); //horizontal right sides
 
     ddaAlgorithm(500,-50,550,-50,1); //top of the stick
     ddaAlgorithm(500,-50,500,-300,1); //left part of the stick
-    ddaAlgorithm(550,-50,550,-300,1); //left part of the stick
+    ddaAlgorithm(550,-50,550,-300,1); //right part of the stick
+    
+    //ddaAlgorithm(450,-150,600,-150,1); //horizotal flage bottom
+    
+    //thread part of the flag
+    ddaAlgorithm(550,-75,575,-75,1); //top 
+    ddaAlgorithm(550,-200,575,-200,1); //bottom
+    
+    
+    //flag
+    ddaAlgorithm(575,-50,575,-250,1); //left
+    ddaAlgorithm(575,-250,675,-150,1); //bottom-top line
+    ddaAlgorithm(575,-50,675,-150,1); //top-bottom line
 
 
 
