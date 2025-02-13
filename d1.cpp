@@ -1,5 +1,7 @@
 #include<GL/glut.h>
 
+int l=1000;
+int w=700;
 
 void init()
 {
@@ -58,7 +60,7 @@ int main(int c,char**v){
     glutInit(&c,v);
     glutInitDisplayMode(GLUT_RGB);
     glutInitWindowPosition(500,100);
-    glutInitWindowSize(1000,700);
+    glutInitWindowSize(l,w);
     glutCreateWindow("I am noob");
     init();
     glutDisplayFunc(displayPoints);

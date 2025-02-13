@@ -5,6 +5,7 @@ wsl -d ubuntu
 
 steps for installing an opengl library:
 
+//first navigate to your program folder you want to write prgrams
 
 sudo apt-get update
 sudo apt-get install freeglut3-dev
