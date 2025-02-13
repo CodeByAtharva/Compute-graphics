@@ -84,13 +84,34 @@ void plotAxis(){
     glFlush();
 }
 
+
+
+
+void drawBoat(){
+    ddaAlgorithm(300,-300,750,-300,1); //horizotal big 1
+    ddaAlgorithm(300,-350,750,-350,1); //horizotal big 2
+    ddaAlgorithm(400,-500,650,-500,1); //horizontal short
+    
+    ddaAlgorithm(300,-300,300,-350,1); //joint the vertical left part 
+    ddaAlgorithm(750,-350,750,-300,1); //joint the vertical left part 
+
+
+    ddaAlgorithm(400,-500,300,-350,1); //connecting left sides
+    ddaAlgorithm(650,-500,750,-350,1); //horizontal right sides
+
+
+}
+
+
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    /*ddaAlgorithm(100,100,200,200,1);
+    ddaAlgorithm(100,100,200,200,1);
     ddaAlgorithm(-100,-50,-100,-300,2);
-    ddaAlgorithm(-300, -450, -100, 500, 3);*/
+    ddaAlgorithm(-300, -450, -100, 500, 3);
     
-    ddaAlgorithm(100,50,100,50,2);
+    //ddaAlgorithm(100,50,100,50,2);
+
+    drawBoat();
     plotAxis();
 
 }
@@ -102,7 +123,7 @@ int main(int c,char** v){
     glutInit(&c,v);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(wl,wh);
-    glutInitWindowPosition(100,150);
+    glutInitWindowPosition(100,50);
     glutCreateWindow("DDA Assignment 1");
 
     glutDisplayFunc(display);
