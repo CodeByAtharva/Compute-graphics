@@ -5,8 +5,8 @@
 using namespace std;
 
 
-int wl=700;
-int wh=700;
+int wl=1400;
+int wh=900;
 void myInit(void){
     glClearColor(1.0,1.0,1.0,1.0);
     glColor3i(0,0,0);
@@ -17,6 +17,7 @@ void myInit(void){
 
 
 void ddaAlgorithm(int x1,int y1,int x2,int y2, int LineType){
+
 
 int l;
 int dx=x2-x1;
@@ -29,9 +30,6 @@ if(abs(dx)>abs(dy)){
 }else{
     l=abs(dy);
 }
-
-
-//l = max(abs(dx), abs(dy));
 
 
 
@@ -88,10 +86,11 @@ void plotAxis(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    ddaAlgorithm(100,100,200,200,1);
+    /*ddaAlgorithm(100,100,200,200,1);
     ddaAlgorithm(-100,-50,-100,-300,2);
-    ddaAlgorithm(-300, -450, -100, 500, 3);
-
+    ddaAlgorithm(-300, -450, -100, 500, 3);*/
+    
+    ddaAlgorithm(100,50,100,50,2);
     plotAxis();
 
 }
