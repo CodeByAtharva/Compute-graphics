@@ -101,11 +101,19 @@ void drawDiag(){
     BAlgorihtm(300,-300,300,-700,1); //vertical left
     BAlgorihtm(750,-300,750,-700,1); //vertical right
     
-    
+    //inner diamond
     BAlgorihtm(300,-500,525,-300,1); //slope line from left - top
     BAlgorihtm(525,-300,750,-500,1); //slope line from top - right
     BAlgorihtm(750,-500,525,-700,1); //slope line from right - bottom
     BAlgorihtm(525,-700,300,-500,1); //slope line from bottom - left
+
+
+    
+    // Inner square inside the diamond
+    BAlgorihtm(412, -400, 637, -400, 1); // Top horizontal
+    BAlgorihtm(637, -400, 637, -600, 1); // Right vertical
+    BAlgorihtm(637, -600, 412, -600, 1); // Bottom horizontal
+    BAlgorihtm(412, -600, 412, -400, 1); // Left vertical
 
 
 }
