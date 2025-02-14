@@ -121,7 +121,7 @@ void drawDiag(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-
+/*
     BAlgorihtm(-wl,0,wl,0,1);
     BAlgorihtm(0,-wh,0,wh,1);
 
@@ -130,6 +130,28 @@ void display(){
     BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
 
     drawDiag();
+    */
+
+}
+
+
+
+void menu(int index){
+    
+    if(index==1){
+        BAlgorihtm(100,100,200,200,1); //simple line
+        
+    }else if(index==2){
+        BAlgorihtm(-100,-50,-100,-300,2); //dashed line
+
+    }else if(index==3){
+        BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
+    }else if(index==4){
+        drawDiag();
+    }else if(index==5){ //draw axis
+        BAlgorihtm(-wl,0,wl,0,1);
+        BAlgorihtm(0,-wh,0,wh,1);
+    }
 
 }
 
@@ -143,6 +165,14 @@ int main(int c,char** v){
 
     glutDisplayFunc(display);
     myInit();
+
+    glutCreateMenu(menu);
+    glutAddMenuEntry("simple line",1);
+    glutAddMenuEntry("dashed line",2);
+    glutAddMenuEntry("dotted line",3);
+    glutAddMenuEntry("diagram",4);
+    glutAddMenuEntry("draw Axis",5);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     
     glutMainLoop();

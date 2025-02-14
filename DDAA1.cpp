@@ -45,17 +45,17 @@ glBegin(GL_POINTS);
     for(int i=0;i<=l;i++){
         glColor3i(0,0,0);
 
-        if(LineType==1){
+        if(LineType==1){ //simple
             glVertex2i(round(x),round(y));
             
-        }else if(LineType==2){
+        }else if(LineType==2){ //dashed
             
             if(i%5==0){
                 glVertex2i(round(x),round(y));
 
             }
 
-        }else if(LineType==3){
+        }else if(LineType==3){ //dotted
             if(i%10==0){
                 glVertex2i(round(x),round(y));
 
