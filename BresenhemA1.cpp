@@ -93,13 +93,19 @@ void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
 
 void drawDiag(){
 
-    //square
+    //big square
     BAlgorihtm(300,-300,750,-300,1); //horizotal top
     BAlgorihtm(300,-700,750,-700,1); //horizotal bottom
 
 
     BAlgorihtm(300,-300,300,-700,1); //vertical left
     BAlgorihtm(750,-300,750,-700,1); //vertical right
+    
+    
+    BAlgorihtm(300,-500,525,-300,1); //slope line from left - top
+    BAlgorihtm(525,-300,750,-500,1); //slope line from top - right
+    BAlgorihtm(750,-500,525,-700,1); //slope line from right - bottom
+    BAlgorihtm(525,-700,300,-500,1); //slope line from bottom - left
 
 
 }
