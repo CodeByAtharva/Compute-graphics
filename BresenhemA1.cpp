@@ -144,8 +144,7 @@ int main(int c,char** v){
     glutDisplayFunc(display);
     myInit();
 
-
-
+    
     glutMainLoop();
     return 0;
 
