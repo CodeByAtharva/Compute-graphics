@@ -90,6 +90,21 @@ void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
 
 }
 
+
+void drawDiag(){
+
+    //square
+    BAlgorihtm(300,-300,750,-300,1); //horizotal top
+    BAlgorihtm(300,-700,750,-700,1); //horizotal bottom
+
+
+    BAlgorihtm(300,-300,300,-700,1); //vertical left
+    BAlgorihtm(750,-300,750,-700,1); //vertical right
+
+
+}
+
+
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -99,6 +114,8 @@ void display(){
     BAlgorihtm(100,100,200,200,1); //simple line
     BAlgorihtm(-100,-50,-100,-300,2); //dashed line
     BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
+
+    drawDiag();
 
 }
 
