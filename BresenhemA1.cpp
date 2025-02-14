@@ -139,7 +139,7 @@ int main(int c,char** v){
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(wl,wh);
     glutInitWindowPosition(100,50);
-    glutCreateWindow("DDA Assignment 1");
+    glutCreateWindow("Bresenhem's Line Algorithm");
 
     glutDisplayFunc(display);
     myInit();
