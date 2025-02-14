@@ -12,6 +12,23 @@ void myInit(void){
 
 }
 
+void plotAxis(){
+    glBegin(GL_LINES);
+        glVertex2i(-wl,0); //
+        glVertex2i(wl,0);
+
+
+
+        glVertex2i(0,-wh);
+        glVertex2i(0,wh);
+
+      
+    glEnd();
+    glFlush();
+}
+
+
+
 void circleAlgo(int r,int h,int k){
 
     int d=3-(2*r);
@@ -51,9 +68,19 @@ void circleAlgo(int r,int h,int k){
 
 }
 
+void olympicRing(){
+    circleAlgo(100,200,200);
+    circleAlgo(100,300,200);
+    //circleAlgo(100,300,400);
+    //circleAlgo(100,500,400);
+}
+
+
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    circleAlgo(100,0,0);
+    //circleAlgo(100,0,0);
+    olympicRing();
+    plotAxis();
     glFlush();
 
 }
