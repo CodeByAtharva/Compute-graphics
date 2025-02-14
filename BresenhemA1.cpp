@@ -24,7 +24,7 @@ int sign(int val){
     }
 }
 
-void BAlgorihtm(int x1,int y1,int x2,int y2){
+void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
     int x=x1;
     int y=y1;
     int Dx=abs(x2-x1);
@@ -45,10 +45,28 @@ void BAlgorihtm(int x1,int y1,int x2,int y2){
     int e=2*Dy-Dx;
 
     glBegin(GL_POINTS);
-        glVertex2i(x,y);
+       // glVertex2i(x,y);
 
         for(int i=1;i<=Dx;i++){
-            glVertex2i(x,y);
+           // glVertex2i(x,y);
+
+            if (LineType == 1) {  // Solid line
+                glVertex2i(x, y);
+            } else if (LineType == 2) {  //dashed line
+                if (i % 5 ==0) {  
+                    glVertex2i(x, y);
+                }
+            } else if (LineType == 3) {  //dotted line
+                if (i % 10 == 0) {  
+                    glVertex2i(x, y);
+                }
+            }
+
+
+
+
+
+
             while(e>=0){
                 if(interchange==1){
                     x=x+s1;
@@ -74,7 +92,13 @@ void BAlgorihtm(int x1,int y1,int x2,int y2){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    BAlgorihtm(100,100,200,200);
+
+    BAlgorihtm(-wl,0,wl,0,1);
+    BAlgorihtm(0,-wh,0,wh,1);
+
+    BAlgorihtm(100,100,200,200,1); //simple line
+    BAlgorihtm(-100,-50,-100,-300,2); //dashed line
+    BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
 
 }
 
