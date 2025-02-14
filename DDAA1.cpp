@@ -70,7 +70,7 @@ glBegin(GL_POINTS);
 
 
 }
-
+/*
 void plotAxis(){
     glBegin(GL_LINES);
         glVertex2i(-wl,0); //
@@ -80,10 +80,12 @@ void plotAxis(){
 
         glVertex2i(0,-wh);
         glVertex2i(0,wh);
+
+      
     glEnd();
     glFlush();
 }
-
+*/
 
 
 
@@ -122,14 +124,19 @@ void drawBoat(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    ddaAlgorithm(100,100,200,200,1);
-    ddaAlgorithm(-100,-50,-100,-300,2);
-    ddaAlgorithm(-300, -450, -100, 500, 3);
+
+    //axis plottin
+    ddaAlgorithm(-wl,0,wl,0,1);
+    ddaAlgorithm(0,-wh,0,wh,1);
+
+    ddaAlgorithm(100,100,200,200,1); //simple line
+    ddaAlgorithm(-100,-50,-100,-300,2); //dashed line
+    ddaAlgorithm(-300, -450, -100, 500, 3); //dotted line
     
     //ddaAlgorithm(100,50,100,50,2);
 
     drawBoat();
-    plotAxis();
+    //plotAxis();
 
 }
 
