@@ -18,6 +18,7 @@ void myInit(void){
 
 void ddaAlgorithm(int x1,int y1,int x2,int y2, int LineType){
 
+    //validation for checking source and destination points
     if (x1 == x2 && y1 == y2) {
         cout << "Error: Source and Destination points are the same! Line cannot be drawn." << endl;
         return;
@@ -43,7 +44,6 @@ float DY = dy / float(l);
 
 float x=x1;
 float y=y1;
-
 
 
 glBegin(GL_POINTS);
@@ -75,22 +75,7 @@ glBegin(GL_POINTS);
 
 
 }
-/*
-void plotAxis(){
-    glBegin(GL_LINES);
-        glVertex2i(-wl,0); //
-        glVertex2i(wl,0);
 
-
-
-        glVertex2i(0,-wh);
-        glVertex2i(0,wh);
-
-      
-    glEnd();
-    glFlush();
-}
-*/
 
 
 
@@ -129,19 +114,7 @@ void drawBoat(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-
     ddaAlgorithm(100,100,100,100,1);
-
-    //axis plottin
-    
-    /*ddaAlgorithm(100,100,200,200,1); //simple line
-    ddaAlgorithm(-100,-50,-100,-300,2); //dashed line
-    ddaAlgorithm(-300, -450, -100, 500, 3); //dotted line
-    
-    //ddaAlgorithm(100,50,100,50,2);
-    
-    drawBoat();*/
-    //plotAxis();
 
 }
 
