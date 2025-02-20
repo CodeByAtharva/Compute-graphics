@@ -114,7 +114,7 @@ void drawBoat(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-    ddaAlgorithm(100,100,100,100,1);
+    //ddaAlgorithm(100,100,100,100,1);
 
 }
 
