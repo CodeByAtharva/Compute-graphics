@@ -5,8 +5,8 @@
 using namespace std;
 
 
-int wl=1400;
-int wh=900;
+int wl=1200;
+int wh=700;
 void myInit(void){
     glClearColor(1.0,1.0,1.0,1.0);
     glColor3i(0,0,0);
@@ -17,6 +17,11 @@ void myInit(void){
 
 
 void ddaAlgorithm(int x1,int y1,int x2,int y2, int LineType){
+
+    if (x1 == x2 && y1 == y2) {
+        cout << "Error: Source and Destination points are the same! Line cannot be drawn." << endl;
+        return;
+    }
 
 
 int l;  
@@ -124,6 +129,8 @@ void drawBoat(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
+
+    ddaAlgorithm(100,100,100,100,1);
 
     //axis plottin
     
