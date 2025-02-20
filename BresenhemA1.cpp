@@ -1,7 +1,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include<math.h>
-
+using namespace std;
 
 int wl=1400;
 int wh=900;
@@ -25,6 +25,13 @@ int sign(int val){
 }
 
 void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
+
+     //validation for checking source and destination points
+     if (x1 == x2 && y1 == y2) {
+        cout << "Error: Source and Destination points are the same! Line cannot be drawn." << endl;
+        return;
+    }
+
     int x=x1;
     int y=y1;
     int Dx=abs(x2-x1);
@@ -61,11 +68,6 @@ void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
                     glVertex2i(x, y);
                 }
             }
-
-
-
-
-
 
             while(e>=0){
                 if(interchange==1){
@@ -121,16 +123,7 @@ void drawDiag(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
-/*
-    BAlgorihtm(-wl,0,wl,0,1);
-    BAlgorihtm(0,-wh,0,wh,1);
-
-    BAlgorihtm(100,100,200,200,1); //simple line
-    BAlgorihtm(-100,-50,-100,-300,2); //dashed line
-    BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
-
-    drawDiag();
-    */
+    //BAlgorihtm(100,100,100,100,1);
 
 }
 
