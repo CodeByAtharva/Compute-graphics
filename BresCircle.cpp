@@ -66,6 +66,7 @@ void circleAlgo(int r, int h, int k) {
 
 void olympicRing() {
 
+        glPointSize(5.0);
        glColor3f(0.0, 0.129, 0.584);  // Olympic blue
        circleAlgo(100, 100, 300);
        
@@ -86,8 +87,6 @@ void olympicRing() {
 
 
 void drawShape() {
-    
-       
         int x = 500;
         int y = -400;
         
@@ -119,7 +118,7 @@ void display() {
     olympicRing();
 
     glColor3i(0, 0, 0);
-    
+    glPointSize(2.0);
     circleAlgo(100,0,0);
 
 
