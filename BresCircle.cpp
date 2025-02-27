@@ -27,6 +27,10 @@ void plotAxis(){
 
 // Bresenham's Circle Algorithm
 void circleAlgo(int r, int h, int k) {
+
+    if(r<1){
+        cout<<"Error: Invalid radius";
+    }
     int d = 3 - (2 * r);
     int x = 0;
     int y = r;
@@ -176,7 +180,6 @@ int main(int argc, char** v) {
     glutAddMenuEntry("Draw Axis", 5);
     glutAddMenuEntry("Draw shape", 6);
     
-    // Attach menu to right-click
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutMainLoop();
