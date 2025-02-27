@@ -105,6 +105,34 @@ void display() {
     glFlush();
 }
 
+
+void drawSpiral() {
+    float angle = 0.0;
+    float radius = 5.0;
+    float angleIncrement = 0.1;  // Smaller for smoother curves
+    float radiusIncrement = 1.5; // Adjusts spacing
+
+   // glColor3f(1.0, 0.0, 0.0); // Red spiral
+    glBegin(GL_LINE_STRIP);  
+
+    while (radius < 300) {  
+        int x = -radius * cos(angle) - 700; // Move further left
+        int y = radius * sin(angle) + 300;  // Move upward
+
+        glVertex2i(x, y);
+        
+        angle += angleIncrement;
+        radius += radiusIncrement;
+    }
+    
+    glEnd();
+    glFlush();
+}
+
+
+
+
+
 void menu(int c) {
    // glClear(GL_COLOR_BUFFER_BIT);
     
@@ -118,7 +146,11 @@ void menu(int c) {
         //concentric circle
         circleAlgo(200, -300, -300); // Outer circle
         circleAlgo(100, -300, -300); // Inner circle
-    }else if(c==5){
+    }else if(c==4){
+        glColor3i(0, 0, 0);      
+        drawSpiral();
+    }
+    else if(c==5){
         plotAxis(); //to plot the axis
     }else if(c==6){
         drawShape(); // to draw the shape
