@@ -2,6 +2,8 @@
 #include <GL/glut.h>
 #include <math.h>
 
+using namespace std;
+
 int wl = 1400;
 int wh = 900;
 
@@ -28,9 +30,12 @@ void plotAxis(){
 // Bresenham's Circle Algorithm
 void circleAlgo(int r, int h, int k) {
 
+    //validation if radius is less than 1
     if(r<1){
-        cout<<"Error: Invalid radius";
+        cout<<"Error: Invalid radius\n";
     }
+
+
     int d = 3 - (2 * r);
     int x = 0;
     int y = r;
@@ -106,6 +111,7 @@ void drawShape() {
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
+    circleAlgo(-100,0,0);
     glFlush();
 }
 
