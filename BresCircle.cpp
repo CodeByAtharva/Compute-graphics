@@ -112,7 +112,6 @@ void drawSpiral() {
     float angleIncrement = 0.1;  // Smaller for smoother curves
     float radiusIncrement = 1.5; // Adjusts spacing
 
-   // glColor3f(1.0, 0.0, 0.0); // Red spiral
     glBegin(GL_LINE_STRIP);  
 
     while (radius < 300) {  
