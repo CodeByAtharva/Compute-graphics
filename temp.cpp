@@ -1,188 +1,97 @@
 #include <iostream>
+#include <stack>
 #include <GL/glut.h>
-#include <math.h>
 
 using namespace std;
 
-int wl = 1400;
-int wh = 900;
+int wl = 1200, wh = 700;  // Window size
 
-void myInit(void) {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glColor3i(0, 0, 0);
-    glPointSize(2.0);
-    gluOrtho2D(-wl, wl, -wh, wh);
+// Define colors
+float borderColor[] = {0.0, 0.0, 0.0};  // Black
+float fillColor[] = {1.0, 0.0, 0.0};    // Red
+
+// Function to check if two colors are equal (with tolerance)
+bool colorEqual(unsigned char pixel[], float color[]) {
+    return (abs(pixel[0] - (unsigned char)(color[0] * 255)) < 5 &&
+            abs(pixel[1] - (unsigned char)(color[1] * 255)) < 5 &&
+            abs(pixel[2] - (unsigned char)(color[2] * 255)) < 5);
 }
 
-// Function to plot axis
-void plotAxis() {
-    glBegin(GL_POINTS);
-    for (int i = -wl; i < wl; i++) {
-        glVertex2i(i, 0);
-    }
-    for (int i = -wh; i < wh; i++) {
-        glVertex2i(0, i);
-    }
-    glEnd();
-    glFlush();
-}
+// Stack-based Flood Fill (avoiding stack overflow)
+void BFill(int x, int y, float fc[], float bc[]) {
+    stack<pair<int, int>> pixelStack;
+    pixelStack.push({x, y});
 
-// Bresenham's Circle Algorithm
-void circleAlgo(int r, int h, int k) {
-    if (r < 1) {
-        cout << "Error: Invalid radius\n";
-    }
+    while (!pixelStack.empty()) {
+        auto [px, py] = pixelStack.top();
+        pixelStack.pop();
 
-    int d = 3 - (2 * r);
-    int x = 0;
-    int y = r;
+        // Convert world coordinates to screen coordinates
+        int sx = px + wl;  // Convert from (-wl, wl) to (0, 2*wl)
+        int sy = py + wh;  // Convert from (-wh, wh) to (0, 2*wh)
 
-    glBegin(GL_POINTS);
-    while (x <= y) {  
-        if (d <= 0) {
-            d = d + 4 * x + 6;
-        } else {
-            d = d + 4 * (x - y) + 10;
-            y--;  
+        // Read pixel color
+        unsigned char pixel[3];
+        glReadPixels(sx, sy, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+
+        // If pixel is already filled or it's a border, continue
+        if (colorEqual(pixel, fc) || colorEqual(pixel, bc)) {
+            continue;
         }
-        x++;
-        
-        // Plot all 8 symmetrical points
-        glVertex2i(h + x, k + y);
-        glVertex2i(h - x, k + y);
-        glVertex2i(h + x, k - y);
-        glVertex2i(h - x, k - y);
-        
-        glVertex2i(h + y, k + x);
-        glVertex2i(h - y, k + x);
-        glVertex2i(h + y, k - x);
-        glVertex2i(h - y, k - x);
+
+        // Fill the pixel
+        glColor3fv(fc);
+        glBegin(GL_POINTS);
+        glVertex2i(px, py);
+        glEnd();
+        glFlush();
+
+        // Push adjacent pixels
+        pixelStack.push({px + 1, py});
+        pixelStack.push({px - 1, py});
+        pixelStack.push({px, py + 1});
+        pixelStack.push({px, py - 1});
     }
-    glEnd();
-    glFlush();
-}
-
-// Olympic Rings (shifted downward)
-void olympicRing() {
-    glPointSize(5.0);
-    glColor3f(0.0, 0.129, 0.584);  // Blue
-    circleAlgo(100, -200, 150);
-    
-    glColor3f(1.0, 0.8, 0.0);  // Yellow
-    circleAlgo(100, 0, 150);
-    
-    glColor3f(0.0, 0.0, 0.0);  // Black
-    circleAlgo(100, 200, 150);
-    
-    glColor3f(0.0, 0.6, 0.2);  // Green
-    circleAlgo(100, -100, 50);
-    
-    glColor3f(0.906, 0.082, 0.129);  // Red
-    circleAlgo(100, 100, 50);
-}
-
-// Shape with modified position
-void drawShape() {
-    int x = -600; // Shifted left
-    int y = -500; // Shifted downward
-    
-    // Outer Circle
-    circleAlgo(200, x, y);
-    
-    glBegin(GL_LINES);
-    
-    // Triangle lines
-    glVertex2i(x, y + 200);
-    glVertex2i(x - 173, y - 100);
-    
-    glVertex2i(x - 173, y - 100);
-    glVertex2i(x + 173, y - 100);
-    
-    glVertex2i(x + 173, y - 100);
-    glVertex2i(x, y + 200);
-    
-    glEnd();
-    
-    // Inner Circle
-    circleAlgo(80, x, y);
-}
-
-// Spiral shifted right
-void drawSpiral() {
-    float angle = 0.0;
-    float radius = 5.0;
-    float angleIncrement = 0.1;
-    float radiusIncrement = 1.5;
-
-    glBegin(GL_LINE_STRIP);
-
-    while (radius < 300) {  
-        int x = radius * cos(angle) + 700; // Shifted right
-        int y = radius * sin(angle) - 200; // Shifted downward
-
-        glVertex2i(x, y);
-        
-        angle += angleIncrement;
-        radius += radiusIncrement;
-    }
-    
-    glEnd();
-    glFlush();
 }
 
 // Display function
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
+    // Draw square
+    glLineWidth(3.0);
+    glColor3fv(borderColor);
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(300, -300);
+    glVertex2i(750, -300);
+    glVertex2i(750, -700);
+    glVertex2i(300, -700);
+    glEnd();
     glFlush();
+
+    // Start boundary fill inside the square
+    BFill(525, -500, fillColor, borderColor);
 }
 
-// Concentric Circles 
-void concentricCircles() {
-    glColor3i(0, 0, 0);
-    circleAlgo(200, 700, 300);
-    circleAlgo(100, 700, 300);
+// Initialization
+void myInit() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glPointSize(1.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-wl, wl, -wh, wh);
 }
 
-// Menu function
-void menu(int c) {
-    if (c == 1) { // Simple circle
-        glColor3i(0, 0, 0);
-        circleAlgo(100, -400, 300);
-    } else if (c == 2) {
-        olympicRing();
-    } else if (c == 3) {
-        concentricCircles();
-    } else if (c == 4) {
-        drawSpiral();
-    } else if (c == 5) {
-        plotAxis();
-    } else if (c == 6) {
-        drawShape();
-    }
-    
-    glFlush();
-}
-
-int main(int argc, char** v) {
-    glutInit(&argc, v);
+// Main function
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(wl, wh);
     glutInitWindowPosition(100, 50);
-    glutCreateWindow("Modified Bresenham's Circle Algorithm");
+    glutCreateWindow("OpenGL Square with Boundary Fill");
 
     glutDisplayFunc(display);
     myInit();
-
-    glutCreateMenu(menu);
-    glutAddMenuEntry("Simple circle", 1);
-    glutAddMenuEntry("Olympic ring", 2);
-    glutAddMenuEntry("Concentric circle", 3);
-    glutAddMenuEntry("Spiral", 4);
-    glutAddMenuEntry("Draw Axis", 5);
-    glutAddMenuEntry("Draw shape", 6);
-    
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutMainLoop();
     return 0;
