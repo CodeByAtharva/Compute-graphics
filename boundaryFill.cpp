@@ -30,7 +30,7 @@ void BFill(int x, int y, float fc[], float bc[]) {
     if (x < -wl || x >= wl || y < -wh || y >= wh) return; // Boundary check
     
     unsigned char pixel[3];
-    glReadPixels(x + wl, y + wh, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel); // Adjusted for coordinate system
+    glReadPixels(x + wl, y + wh, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel); 
 
     if (!colorEqual(pixel, fc) && !colorEqual(pixel, bc)) {
         glColor3fv(fc);
