@@ -20,10 +20,6 @@ void display() {
 
     //glPushMatrix(); // use to save the current transformation matrix onto a stack this function is deprecated from the opengl
 
-    // Apply transformations
-    glTranslatef(tx, ty, 0); // Translation
-    glScalef(sx, sy, 1);     // Scaling
-    glRotatef(angle, 0, 0, 1); // Rotation
     glBegin(GL_LINES);
 
     // Draw a rectangle
@@ -47,6 +43,59 @@ void display() {
 }
 
 
+void menu(int option) {
+    switch (option) {
+        case 1: // Translation
+            glTranslatef(-200,0,0);
+
+            break;
+        case 2: // Scaling
+            glScalef(2,2,1);
+
+            break;
+        case 3: // Rotation
+            glRotatef(45,0,0,1);
+
+            break;
+        case 4: // Rotation about arbitrary point
+            glTranslatef(300, 300, 0); // Translate to arbitrary point (300, 300)
+            glRotatef(45, 0, 0, 1);    // Rotate by 45 degrees
+            glTranslatef(-300, -300, 0); // Translate back
+
+            break;
+        case 5: // Scaling about fixed point
+            glTranslatef(300, 300, 0); // Translate to fixed point (300, 300)
+            glScalef(2, 2, 1);         // Scale by a factor of 2
+            glTranslatef(-300, -300, 0); // Translate back
+            break;
+        case 6: // Reflection
+            glScalef(-1, 1, 1);
+ 
+            break;
+        case 7: // Shear
+
+        {
+            // Define the shear matrix
+            float shx = 0.5f; // Shear factor in x-direction
+            float shy = 0.2f; // Shear factor in y-direction
+            float shearMatrix[16] = {
+                1, shx, 0, 0, // First column
+                shy, 1,  0, 0, // Second column
+                0,  0,  1, 0, // Third column
+                0,  0,  0, 1  // Fourth column
+            };
+
+            // Apply the shear matrix
+            glMultMatrixf(shearMatrix);
+            break;
+        }
+
+            break;
+        default:
+            break;
+    }
+    glutPostRedisplay(); // Redraw the scene
+}
 
 
 
