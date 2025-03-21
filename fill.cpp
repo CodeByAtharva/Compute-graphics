@@ -1,4 +1,3 @@
-
 #include <GL/glut.h>
 #include <iostream>
 #define w 640
@@ -20,16 +19,14 @@ void getpixel(int x, int y, float *color) {
     glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, color);
 }
 
-// Recursive boundary fill algorithm
+//Boundary Fill Algorithm
 void boundaryFill(int x, int y) {
-    if (x >= w || x < 0 || y >= h || y < 0) return; // Boundary check
+    if (x >= w || x < 0 || y >= h || y < 0) return;
 
     getpixel(x, y, readpixel);
     if ((readpixel[0] != boundaryColor[0] || readpixel[1] != boundaryColor[1] || readpixel[2] != boundaryColor[2]) &&
         (readpixel[0] != fillColor[0] || readpixel[1] != fillColor[1] || readpixel[2] != fillColor[2])) {
         setpixel(x, y);
-
-        // Recursively call for neighboring pixels
         boundaryFill(x + 1, y);
         boundaryFill(x - 1, y);
         boundaryFill(x, y + 1);
@@ -37,15 +34,14 @@ void boundaryFill(int x, int y) {
     }
 }
 
-// Recursive flood fill algorithm
+//Flood fill algorithm
+
 void floodfill(int x, int y) {
-    if (x >= w || x < 0 || y >= h || y < 0) return; // Boundary check
+    if (x >= w || x < 0 || y >= h || y < 0) return;
 
     getpixel(x, y, readpixel);
     if (readpixel[0] == interiorColor[0] && readpixel[1] == interiorColor[1] && readpixel[2] == interiorColor[2]) {
         setpixel(x, y);
-
-        // Recursively call for neighboring pixels
         floodfill(x + 1, y);
         floodfill(x - 1, y);
         floodfill(x, y + 1);
@@ -67,7 +63,7 @@ void drawHollowRectangle(int x1, int y1, int x2, int y2) {
 void mouseClick(int button, int state, int x, int y) {
     if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON) {
         int X = x;
-        int Y = h - y; // Adjust for OpenGL coordinate system
+        int Y = h - y;
 
         if (fillalgo) {
             floodfill(X, Y);
@@ -86,7 +82,6 @@ void menu(int index) {
         exit(0);
     }
 
-    // Clear screen and redraw the rectangle
     glClear(GL_COLOR_BUFFER_BIT);
     drawHollowRectangle(100, 100, 250, 250);
     glFlush();
@@ -99,31 +94,30 @@ void display() {
 }
 
 void init() {
-    glClearColor(1.0, 1.0, 1.0, 1.0); // Set clear color to white
-    glColor3f(1.0, 0.0, 0.0);         // Set default drawing color to red
-    glMatrixMode(GL_PROJECTION);      // Set projection mode
-    glLoadIdentity();                 // Reset projection matrix
-    gluOrtho2D(0, w, 0, h);           // Set orthographic projection
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glColor3f(1.0, 0.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, w, 0, h);
 }
 
 int main(int argc, char **argv) {
-    glutInit(&argc, argv);                              // Initialize GLUT
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);        // Set display mode
-    glutInitWindowSize(w, h);                           // Set window size
-    glutInitWindowPosition(100, 150);                   // Set window position
-    glutCreateWindow("Seed Fill Algorithm with Recursion"); // Create window
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(w, h);
+    glutInitWindowPosition(100, 150);
+    glutCreateWindow("Seed Fill Algorithm");
 
-    glutCreateMenu(menu);                               // Create menu
-    glutAddMenuEntry("Flood Fill", 1);                  // Add menu entries
+    glutCreateMenu(menu);
+    glutAddMenuEntry("Flood Fill", 1);
     glutAddMenuEntry("Boundary Fill", 2);
     glutAddMenuEntry("Exit", 3);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);                  // Attach menu to right button
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-    init();                                             // Initialize OpenGL settings
-    glutDisplayFunc(display);                           // Set display callback
-    glutMouseFunc(mouseClick);                          // Set mouse callback
-    glutMainLoop();                                     // Enter main loop
+    init();
+    glutDisplayFunc(display);
+    glutMouseFunc(mouseClick);
+    glutMainLoop();
 
     return 0;
 }
-
