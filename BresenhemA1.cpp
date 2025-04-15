@@ -67,6 +67,15 @@ void BAlgorihtm(int x1,int y1,int x2,int y2,int LineType){
                 if (i % 10 == 0) {  
                     glVertex2i(x, y);
                 }
+            }else if(LineType==4){ // dashed-dotted
+                    int patternLength = 20;
+                    int dashLength = 5;
+                    int dotPosition = 12;
+                
+                    int mod = i % patternLength;
+                    if(mod < dashLength || mod == dotPosition){
+                        glVertex2i(round(x), round(y));
+                }
             }
 
             while(e>=0){
@@ -139,9 +148,13 @@ void menu(int index){
 
     }else if(index==3){
         BAlgorihtm(-300, -450, -100, 500, 3); //dotted line
-    }else if(index==4){
+    }
+    else if(index==4){ // dashed-dotted line
+        BAlgorihtm(-200, -450, -50, 500, 4); //dashed-dotted line
+    }
+    else if(index==5){
         drawDiag();
-    }else if(index==5){ //draw axis
+    }else if(index==6){ //draw axis
         BAlgorihtm(-wl,0,wl,0,1);
         BAlgorihtm(0,-wh,0,wh,1);
     }
@@ -163,8 +176,9 @@ int main(int c,char** v){
     glutAddMenuEntry("simple line",1);
     glutAddMenuEntry("dashed line",2);
     glutAddMenuEntry("dotted line",3);
-    glutAddMenuEntry("diagram",4);
-    glutAddMenuEntry("draw Axis",5);
+    glutAddMenuEntry("dasshed dotted line",4);
+    glutAddMenuEntry("diagram",5);
+    glutAddMenuEntry("draw Axis",6);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     

@@ -65,6 +65,15 @@ glBegin(GL_POINTS);
                 glVertex2i(round(x),round(y));
 
             }
+        }else if(LineType==4){ // dashed-dotted
+            int patternLength = 20;
+            int dashLength = 5;
+            int dotPosition = 12;
+        
+            int mod = i % patternLength;
+            if(mod < dashLength || mod == dotPosition){
+                glVertex2i(round(x), round(y));
+            }
         }
         x=x+DX;
         y=y+DY;
@@ -131,8 +140,11 @@ void menu(int index){
     }else if(index==3){
         ddaAlgorithm(-300, -450, -100, 500, 3); //dotted line
     }else if(index==4){
+        ddaAlgorithm(-50, -350, -50, 400, 4); //dashed dotted line
+    }else if(index==5){
         drawBoat();
-    }else if(index==5){ //draw axis
+    }
+    else if(index==6){ //draw axis
         ddaAlgorithm(-wl,0,wl,0,1);
         ddaAlgorithm(0,-wh,0,wh,1);
     }
@@ -157,8 +169,9 @@ int main(int c,char** v){
     glutAddMenuEntry("simple line",1);
     glutAddMenuEntry("dashed line",2);
     glutAddMenuEntry("dotted line",3);
-    glutAddMenuEntry("boat",4);
-    glutAddMenuEntry("draw Axis",5);
+    glutAddMenuEntry("dashed dotted line",4);
+    glutAddMenuEntry("boat",5);
+    glutAddMenuEntry("draw Axis",6);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutMainLoop();
