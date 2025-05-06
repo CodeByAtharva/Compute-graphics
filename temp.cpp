@@ -8,7 +8,7 @@ int wl = 1200, wh = 700;  // Window size
 
 // Initialization
 void myInit(void){
-    glClearColor(1.0,1.0,1.0,1.0);
+    glClearColor(1.0,1.0,1.0,0.1);
     glColor3i(1,0,0);
     glPointSize(10.0);
     gluOrtho2D(-wl,wl,-wh,wh);
@@ -18,6 +18,7 @@ void myInit(void){
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_POINTS);
+    glColor3i(1,0,0);
     glVertex2i(100,200);
     glEnd();
     glFlush();
@@ -26,7 +27,7 @@ void display(){
 // Main function
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(wl, wh);
     glutInitWindowPosition(100, 50);
     glutCreateWindow("Demo");

@@ -5,7 +5,7 @@ struct Point {
     float x, y;
 };
 
-// Function to draw a Koch Curve between two points recursively
+// Function to draw Koch Curve between two points recursively
 void kochCurve(Point a, Point b, int depth) {
     if (depth == 0) {
         glBegin(GL_LINES);
@@ -25,12 +25,12 @@ void kochCurve(Point a, Point b, int depth) {
     t.x = (a.x + 2 * b.x) / 3;
     t.y = (a.y + 2 * b.y) / 3;
 
-    // peak of the triangle
+    // Peak of the equilateral triangle
     float angle = M_PI / 3; // 60 degrees in radians
     u.x = s.x + (t.x - s.x) * cos(angle) - (t.y - s.y) * sin(angle);
     u.y = s.y + (t.x - s.x) * sin(angle) + (t.y - s.y) * cos(angle);
 
-    // Recursively draw 4 segments
+    // Recursively draw the 4 parts
     kochCurve(a, s, depth - 1);
     kochCurve(s, u, depth - 1);
     kochCurve(u, t, depth - 1);
@@ -41,11 +41,17 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0, 0, 1);  // Blue color
 
-    Point a = { -0.9f, 0.0f };
-    Point b = { 0.9f, 0.0f };
+    // Define the 3 vertices of an equilateral triangle
+    Point a = { -0.5f, -0.3f };
+    Point b = { 0.5f, -0.3f };
+    Point c = { 0.0f, 0.6f };
 
-    int depth = 4; 
+    int depth = 4; // Level of recursion
+
+    // Draw Koch curve on each side of the triangle
     kochCurve(a, b, depth);
+    kochCurve(b, c, depth);
+    kochCurve(c, a, depth);
 
     glFlush();
 }
@@ -61,7 +67,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Koch Curve");
+    glutCreateWindow("Koch Snowflake");
 
     init();
     glutDisplayFunc(display);
