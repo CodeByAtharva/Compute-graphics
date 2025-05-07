@@ -29,9 +29,9 @@ void display() {
     glColor3f(1.0, 0.0, 1.0); 
     glBegin(GL_LINES); 
     // Equilateral triangle points 
-    float x1 = -0.5f, y1 = -0.3f; 
-    float x2 = 0.5f, y2 = -0.3f; 
-    float x3 = 0.0f, y3 = 0.5f; 
+    float x1 = -0.5, y1 = -0.3; 
+    float x2 = 0.5, y2 = -0.3; 
+    float x3 = 0.0, y3 = 0.5; 
     koch(x1, y1, x2, y2, iterations); 
     koch(x2, y2, x3, y3, iterations); 
     koch(x3, y3, x1, y1, iterations); 
