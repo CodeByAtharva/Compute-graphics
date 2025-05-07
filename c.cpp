@@ -1,217 +1,194 @@
-#include <GL/glut.h>
-#include <algorithm>
+#include<iostream>
+#include<GL/glut.h>
+#include<vector>
+#include<algorithm>
+#include<cmath>
 using namespace std;
 
-const int MAX_POINTS = 100;
+#define w 800
+#define h 800
 
-struct Point {
-    float x, y;
+struct Point{
+    float x,y;
 };
 
-Point polygon[MAX_POINTS];
-Point clippedPolygon[MAX_POINTS];
-int polyCount = 0;
-int clippedCount = 0;
+vector<Point> polygon,clippedPolygon;
+Point windowMin,windowMax;
 
-Point winMin, winMax;
-bool selectingWindow = true;
-bool windowDefined = false;
-int clickCount = 0;
+int currentMode=0,windowClick=0;
 
-int windowWidth = 800, windowHeight = 600;
-
-// Draw rectangle
-void drawRect(Point p1, Point p2) {
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(p1.x, p1.y);
-    glVertex2f(p2.x, p1.y);
-    glVertex2f(p2.x, p2.y);
-    glVertex2f(p1.x, p2.y);
-    glEnd();
-}
-
-// Inside test
-bool inside(Point p, int edge) {
-    switch (edge) {
-        case 0: return p.x >= winMin.x; // Left
-        case 1: return p.x <= winMax.x; // Right
-        case 2: return p.y >= winMin.y; // Bottom
-        case 3: return p.y <= winMax.y; // Top
-    }
-    return false;
-}
-
-// Compute intersection point
-Point intersect(Point p1, Point p2, int edge) {
+Point intersection(Point p1,Point p2,int edge){
     Point i;
-    float m = 0.0f;
-    if (p1.x != p2.x)
-        m = (p2.y - p1.y) / (p2.x - p1.x);
+    float m=(p2.y-p1.y)/(p2.x-p1.x+0.00001);
 
-    switch (edge) {
-        case 0:
-            i.x = winMin.x;
-            i.y = p1.y + m * (winMin.x - p1.x);
-            break;
-        case 1:
-            i.x = winMax.x;
-            i.y = p1.y + m * (winMax.x - p1.x);
-            break;
-        case 2:
-            i.y = winMin.y;
-            if (p1.x == p2.x) i.x = p1.x;
-            else i.x = p1.x + (winMin.y - p1.y) / m;
-            break;
-        case 3:
-            i.y = winMax.y;
-            if (p1.x == p2.x) i.x = p1.x;
-            else i.x = p1.x + (winMax.y - p1.y) / m;
-            break;
+    switch(edge){
+        case 0: i.x=windowMin.x;
+                i.y=p1.y+m*(windowMin.x-p1.x);
+                break;
+        case 1: i.x=windowMax.x;
+                i.y=p1.y+m*(windowMax.x-p1.x);
+                break;
+        case 2: i.y=windowMin.y;
+                i.x=p1.x+(windowMin.y-p1.y)/m;
+                break;
+        case 3: i.y=windowMax.y;
+                i.x=p1.x+(windowMax.y-p1.y)/m;
+                break;
     }
     return i;
 }
 
-// Sutherland-Hodgman algorithm
-void clipPolygon() {
-    Point input[MAX_POINTS];
-    int inputCount = polyCount;
-
-    for (int i = 0; i < polyCount; i++)
-        input[i] = polygon[i];
-
-    for (int edge = 0; edge < 4; edge++) {
-        Point output[MAX_POINTS];
-        int outCount = 0;
-
-        for (int i = 0; i < inputCount; i++) {
-            Point curr = input[i];
-            Point prev = input[(i + inputCount - 1) % inputCount];
-            bool currIn = inside(curr, edge);
-            bool prevIn = inside(prev, edge);
-
-            if (prevIn && currIn) {
-                output[outCount++] = curr;
-            } else if (prevIn && !currIn) {
-                output[outCount++] = intersect(prev, curr, edge);
-            } else if (!prevIn && currIn) {
-                output[outCount++] = intersect(prev, curr, edge);
-                output[outCount++] = curr;
-            }
-        }
-
-        for (int i = 0; i < outCount; i++)
-            input[i] = output[i];
-        inputCount = outCount;
+bool isInside(Point p,int edge){
+    switch(edge){
+        case 0: return (p.x>=windowMin.x);
+        case 1: return (p.x<=windowMax.x);
+        case 2: return (p.y>=windowMin.y);
+        case 3: return (p.y<=windowMax.y);
     }
-
-    clippedCount = inputCount;
-    for (int i = 0; i < clippedCount; i++)
-        clippedPolygon[i] = input[i];
+    return false;
 }
+vector<Point> sh(vector<Point> input,int edge){
+    vector<Point> output;
+    Point S=input.back();
 
-// Normalize y coordinate
-float normalizeY(int y) {
-    return (windowHeight - y) / (float)windowHeight * 2.0f - 1.0f;
-}
-
-// Mouse handling
-void mouse(int button, int state, int x, int y) {
-    if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON) {
-        float fx = (float)x / windowWidth * 2.0f - 1.0f;
-        float fy = normalizeY(y);
-
-        if (fy < 0.0f) return;
-
-        if (selectingWindow) {
-            if (clickCount == 0) {
-                winMin = {fx, fy};
-                clickCount++;
-            } else {
-                winMax = {fx, fy};
-                if (winMin.x > winMax.x) std::swap(winMin.x, winMax.x);
-                if (winMin.y > winMax.y) std::swap(winMin.y, winMax.y);
-                selectingWindow = false;
-                windowDefined = true;
-                clickCount = 0;
+    for(auto E:input){
+        if(isInside(E,edge)){
+            if(isInside(S,edge)){
+                output.push_back(E);
             }
-        } else {
-            if (polyCount < MAX_POINTS) {
-                polygon[polyCount++] = {fx, fy};
+            else{
+                output.push_back(intersection(S,E,edge));
+                output.push_back(E);
             }
         }
-    } else if (state == GLUT_DOWN && button == GLUT_RIGHT_BUTTON) {
-        if (windowDefined && polyCount > 0) {
-            clipPolygon();
+        else if(isInside(S,edge)){
+            output.push_back(intersection(S,E,edge));
         }
+        S=E;
+    }
+    return output;
+}
+
+void clipPolygon(){
+    clippedPolygon=polygon;
+    for(int edge=0;edge<4;edge++){
+        clippedPolygon=sh(clippedPolygon,edge);
+    }
+}
+void mouseClick(int button,int state,int x,int y){
+    if(state==GLUT_DOWN){
+        float X=(x-w/2.0f)*2.0f;
+        float Y=(h/2.0f-y)*2.0f;
+        Point clickPoint={X,Y};
+
+        if(currentMode==1){
+            if(windowClick==0){
+                windowMin=clickPoint;
+                windowClick++;
+            }
+            else{
+                windowMax=clickPoint;
+                if(windowMin.x>windowMax.x){
+                    swap(windowMin.x,windowMax.x);
+                }
+                if(windowMin.y>windowMax.y){
+                    swap(windowMin.y,windowMax.y);
+                }
+
+                windowClick=0;
+            }
+        }
+
+        else if(currentMode==2){
+            polygon.push_back(clickPoint);
+        }
+    }
+    glutPostRedisplay();
+}
+void menu(int index){
+    currentMode=index;
+
+    if(index==3){
+        clippedPolygon.clear();
+        clipPolygon();
     }
 
     glutPostRedisplay();
 }
-
-// Display
-void display() {
+void display(){
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Draw original window
-    if (windowDefined) {
-        glColor3f(0.0f, 0.0f, 0.0f);
-        drawRect(winMin, winMax);
-    }
-
-    // Draw polygon
-    if (polyCount > 0) {
-        glColor3f(0.2f, 0.5f, 0.9f);
-        glBegin(GL_LINE_LOOP);
-        for (int i = 0; i < polyCount; i++)
-            glVertex2f(polygon[i].x, polygon[i].y);
-        glEnd();
-    }
-
-    // Draw clipped polygon in bottom half
-    if (clippedCount > 0 && windowDefined) {
-        float dy = -1.0f;
-        Point shiftedMin = {winMin.x, winMin.y + dy};
-        Point shiftedMax = {winMax.x, winMax.y + dy};
-
-        glColor3f(0.0f, 0.0f, 0.0f);
-        drawRect(shiftedMin, shiftedMax);
-
-        glColor3f(1.0f, 0.2f, 0.2f);
-        glBegin(GL_LINE_LOOP);
-        for (int i = 0; i < clippedCount; i++)
-            glVertex2f(clippedPolygon[i].x, clippedPolygon[i].y + dy);
-        glEnd();
-    }
-
-    // Draw horizontal dividing line
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(0.0,0.0,0.0);
     glBegin(GL_LINES);
-    glVertex2f(-1.0f, 0.0f);
-    glVertex2f(1.0f, 0.0f);
+    glVertex2f(-w,0);
+    glVertex2f(w,0);
     glEnd();
 
-    glutSwapBuffers();
-}
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(windowMin.x,windowMin.y);
+    glVertex2f(windowMin.x,windowMax.y);
+    glVertex2f(windowMax.x,windowMax.y);
+    glVertex2f(windowMax.x,windowMin.y);
+    glEnd();
 
-// Init OpenGL
-void init() {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    if(!polygon.empty())
+    {
+        glColor3f(1.0,0.0,0.0);
+        glBegin(GL_LINE_LOOP);
+        for(auto p:polygon){
+            glVertex2f(p.x,p.y);
+        }
+        glEnd();
+    }
+
+    float offset=800;
+
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(windowMin.x,windowMin.y-offset);
+    glVertex2f(windowMin.x,windowMax.y-offset);
+    glVertex2f(windowMax.x,windowMax.y-offset);
+    glVertex2f(windowMax.x,windowMin.y-offset);
+    glEnd();
+
+    if(!clippedPolygon.empty()){
+        glColor3f(0.0,1.0,0.0);
+        glBegin(GL_LINE_LOOP);
+        for(auto p:clippedPolygon){
+            glVertex2f(p.x,p.y-offset);
+        }
+        glEnd();
+    }
+    glFlush();
+}
+void init(){
+    glClearColor(1.0,1.0,1.0,1.0);
+    glColor3f(0.0,0.0,0.0);
+
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(-1, 1, -1, 1); 
-    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-}
 
-// Main
-int main(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitWindowSize(windowWidth, windowHeight);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);     
-    glutCreateWindow("Polygon Clipping ");
+    gluOrtho2D(-w,w,-h,h);
+}
+int main(int argc,char** argv){
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+
+    glutInitWindowSize(w,h);
+    glutInitWindowPosition(100,100);
+    glutCreateWindow("polygon clipping algorithm");
+
+    glutCreateMenu(menu);
+    glutAddMenuEntry("draw window",1);
+    glutAddMenuEntry("draw polygon",2);
+    glutAddMenuEntry("clip polygon",3);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     init();
     glutDisplayFunc(display);
-    glutMouseFunc(mouse);
+    glutMouseFunc(mouseClick);
     glutMainLoop();
+
     return 0;
 }
